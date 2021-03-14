@@ -24,7 +24,19 @@ module.exports = {
     resolve: {
         extensions: [".tsx", ".ts", ".js"],
     },
-    plugins: [new webpack.HotModuleReplacementPlugin()],
+    plugins: [
+        new webpack.HotModuleReplacementPlugin(),
+        {
+            apply: (compiler:any) => {
+                compiler.hooks.done.tap("DonePlugin", (stats:any) => {
+                    console.log("Compile is done !");
+                    setTimeout(() => {
+                        process.exit(0);
+                    });
+                });
+            },
+        },
+    ],
     output: {
         path: path.join(__dirname, "dist"),
         filename: "index.js",
